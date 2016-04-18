@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <title>React Timer</title>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+		<!-- jsx its a sintaxe created for React -->
+		<script type="text/jsx">
+			var Timer = React.createClass({
+				/* é chamado uma única vez antes de renderizar a página */
+				getInitialState: function(){
+					return {elapsed: 0};
+				},
+				/* é chamado logo após a página ser renderizada */
+				componentDidMount: function(){
+					this.timer = setInterval(this.tick, 50);
+				},
+				/* será chamado para desmontar o componente */
+				componentWillUnmount: function(){
+					clearInterval(this.timer);
+				},
+				/* função auxiliar */
+				tick: function(){
+					this.setState({elapsed: new Date() - this.props.start}); //this.props está definindo uma propriedade "start"
+				},
+				/* renderização */
+				render: function(){
+					var elapsed = Math.round(this.state.elapsed / 100);
+					var seconds = (elapsed / 10).toFixed(1);
+
+					return(
+						<p>Already passed <b>{seconds}</b> seconds.</p>
+					);
+				}
+			});
+
+			React.render(
+				<Timer start={Date.now()} />,
+				document.getElementById('timer')
+			);
+			
+		</script>
+	</head>
+	<body>
+		<h1>Timer</h1>
+		<ul id="timer"></ul>
+	</body>
+</html>
